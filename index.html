@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alquimia Natural | Bienestar, Nutrición y Aromaterapia</title>
+    
+    <!-- SEO & Meta Tags -->
+    <meta name="description" content="Descubre el poder de la Alquimia Natural con Katherine Brenes. Masoterapia, Nutrición, Yoga y Aromaterapia 100% natural para tu bienestar físico y mental.">
+    <meta name="keywords" content="aromaterapia, masajes, nutricion, yoga, medicina alternativa, aceites esenciales, romero, menta, eucalipto, bienestar, costa rica">
+    <meta name="author" content="Katherine Brenes - Alquimia Natural">
+    
+    <!-- Open Graph / WhatsApp / Redes Sociales -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://alquimianatural.profcr.com/">
+    <meta property="og:title" content="Alquimia Natural | Dale un toque natural a tu vida">
+    <meta property="og:description" content="Crea tus propias combinaciones naturales. Masoterapia, Nutrición, Yoga y Medicina Alternativa 100% Natural.">
+    <meta property="og:image" content="images/logo.png">
+    <meta property="og:site_name" content="Alquimia Natural">
+
+    <!-- Favicon -->
+    <link rel="icon" href="images/logo.png" type="image/png">
+    <link rel="apple-touch-icon" href="images/logo.png">
+
+    <!-- Librerías: Tailwind, React, Phosphor Icons -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <!-- React Core -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- Google Fonts (Fuentes Místicas y Elegantes) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <!-- Configuración Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        serif: ['"Cormorant Garamond"', 'serif'],
+                        sans: ['Montserrat', 'sans-serif'],
+                    },
+                    colors: {
+                        alquimia: {
+                            dark: '#1b4332',      // Verde Bosque Profundo
+                            green: '#2d6a4f',     // Verde Esmeralda
+                            light: '#d8f3dc',     // Verde Menta Suave
+                            gold: '#d4af37',      // Oro Alquímico
+                            earth: '#fefae0',     // Tono Arena/Tierra
+                        }
+                    },
+                    animation: {
+                        'float': 'float 6s ease-in-out infinite',
+                        'fade-in': 'fadeIn 1s ease-out forwards',
+                    },
+                    keyframes: {
+                        float: {
+                            '0%, 100%': { transform: 'translateY(0)' },
+                            '50%': { transform: 'translateY(-10px)' },
+                        },
+                        fadeIn: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body { background-color: #fefae0; color: #1b4332; overflow-x: hidden; }
+        
+        .hero-bg {
+            background-image: url('https://images.unsplash.com/photo-1608285514607-e034e3ba15b0?q=80&w=2000&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
+        .glass-panel {
+            background: rgba(254, 250, 224, 0.85);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+
+        .gold-gradient-text {
+            background: linear-gradient(to right, #d4af37, #b8860b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .btn-gold {
+            background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
+            color: white;
+            transition: all 0.3s ease;
+        }
+        .btn-gold:hover {
+            box-shadow: 0 10px 25px rgba(212, 175, 55, 0.4);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-alquimia-green selection:text-white">
+
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        const App = () => {
+            const [scrolled, setScrolled] = useState(false);
+            const [mobileMenu, setMobileMenu] = useState(false);
+            const [activePlant, setActivePlant] = useState('sinergia');
+
+            const WHATSAPP_NUM = "50672000792"; 
+            const WHATSAPP_MSG = encodeURIComponent("Hola Katherine, me gustaría más información sobre las terapias de Alquimia Natural.");
+
+            useEffect(() => {
+                const handleScroll = () => setScrolled(window.scrollY > 50);
+                window.addEventListener('scroll', handleScroll);
+                return () => window.removeEventListener('scroll', handleScroll);
+            }, []);
+
+            const plantData = {
+                sinergia: {
+                    title: "La Sinergia Perfecta",
+                    subtitle: "Orégano, Menta, Eucalipto y Romero",
+                    icon: "ph-flask",
+                    content: "Crea tus propias combinaciones naturales. La combinación de estos aceites en aromaterapia para masajes ofrece beneficios vigorizantes, descongestionantes y analgésicos. Ideales para aliviar dolores musculares, mejorar la circulación y despejar las vías respiratorias. Se mezclan con un aceite base (coco fraccionado o nuez de macadamia) para aplicar en masajes o difusores."
+                },
+                romero: {
+                    title: "Romero",
+                    subtitle: "Memoria y Circulación",
+                    icon: "ph-plant",
+                    content: "Planta aromática con propiedades antioxidantes y antiinflamatorias (ácido rosmarínico). Alivia la indigestión, estimula la función cognitiva (memoria y concentración), favorece el flujo sanguíneo, previene la caída del cabello y ayuda a regular el azúcar en la sangre."
+                },
+                menta: {
+                    title: "Menta",
+                    subtitle: "Alivio y Frescura",
+                    icon: "ph-leaf",
+                    content: "Rica en mentol, relaja el tracto gastrointestinal. Actúa como descongestionante natural, posee propiedades antibacterianas para la salud bucal, y ofrece un efecto analgésico que alivia dolores de cabeza y musculares. Mejora la concentración y reduce la retención de líquidos."
+                },
+                eucalipto: {
+                    title: "Eucalipto",
+                    subtitle: "Respiración Profunda",
+                    icon: "ph-wind",
+                    content: "Originaria de Australia, rica en eucaliptol. Potente expectorante y broncodilatador eficaz para gripes y asma. Acelera la cicatrización de la piel, combate bacterias bucales y tiene efectos relajantes y ansiolíticos excepcionales en aromaterapia."
+                }
+            };
+
+            return (
+                <div className="flex flex-col min-h-screen">
+                    
+                    {/* NAVEGACIÓN */}
+                    <nav className={`fixed w-full z-50 transition-all duration-500 ${scrolled ? 'bg-alquimia-earth/95 backdrop-blur-md shadow-md py-3' : 'bg-transparent py-6'}`}>
+                        <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
+                            <a href="#" className="flex items-center gap-3">
+                                <img src="images/logo.png" alt="Alquimia Natural Logo" className="h-12 w-auto animate-float" onError={(e) => { e.target.style.display='none'; e.target.nextSibling.style.display='block'; }}/>
+                                <div style={{display: 'none'}} className="w-10 h-10 rounded-full border-2 border-alquimia-gold flex items-center justify-center text-alquimia-gold font-serif font-bold text-xl">AN</div>
+                                <div className="flex flex-col">
+                                    <span className={`font-serif font-bold text-xl tracking-wider leading-none ${scrolled ? 'text-alquimia-dark' : 'text-white drop-shadow-md'}`}>ALQUIMIA</span>
+                                    <span className={`font-sans text-[10px] uppercase tracking-[0.3em] font-medium ${scrolled ? 'text-alquimia-green' : 'text-alquimia-light drop-shadow-md'}`}>Natural</span>
+                                </div>
+                            </a>
+
+                            <div className={`hidden md:flex items-center gap-8 font-sans text-sm font-medium tracking-wide ${scrolled ? 'text-alquimia-dark' : 'text-white drop-shadow-md'}`}>
+                                <a href="#nosotros" className="hover:text-alquimia-gold transition">Katherine Brenes</a>
+                                <a href="#servicios" className="hover:text-alquimia-gold transition">Terapias</a>
+                                <a href="#botica" class="hover:text-alquimia-gold transition">La Botica</a>
+                                <a href={`https://wa.me/${WHATSAPP_NUM}?text=${WHATSAPP_MSG}`} target="_blank" className="px-6 py-2.5 btn-gold rounded-full shadow-lg">
+                                    Agendar Cita
+                                </a>
+                            </div>
+
+                            <button className="md:hidden text-2xl" onClick={() => setMobileMenu(!mobileMenu)}>
+                                <i className={`ph ${mobileMenu ? 'ph-x' : 'ph-list'} ${scrolled ? 'text-alquimia-dark' : 'text-white'}`}></i>
+                            </button>
+                        </div>
+
+                        {/* Menú Móvil */}
+                        {mobileMenu && (
+                            <div className="absolute top-full left-0 w-full bg-alquimia-earth shadow-xl flex flex-col p-6 space-y-4 font-sans text-alquimia-dark md:hidden border-t border-alquimia-gold/20">
+                                <a href="#nosotros" onClick={()=>setMobileMenu(false)}>Katherine Brenes</a>
+                                <a href="#servicios" onClick={()=>setMobileMenu(false)}>Servicios y Terapias</a>
+                                <a href="#botica" onClick={()=>setMobileMenu(false)}>La Botica Natural</a>
+                                <a href={`https://wa.me/${WHATSAPP_NUM}?text=${WHATSAPP_MSG}`} target="_blank" className="text-center py-3 btn-gold rounded-full font-bold mt-4">
+                                    <i className="ph-fill ph-whatsapp mr-2"></i> 7200-0792
+                                </a>
+                            </div>
+                        )}
+                    </nav>
+
+                    {/* HERO SECTION */}
+                    <section className="relative min-h-[90vh] flex items-center justify-center hero-bg">
+                        <div className="absolute inset-0 bg-alquimia-dark/50 mix-blend-multiply"></div>
+                        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-transparent to-alquimia-earth"></div>
+                        
+                        <div className="relative z-10 max-w-4xl mx-auto px-6 text-center animate-fade-in mt-20">
+                            <p className="text-alquimia-light font-sans text-sm md:text-base uppercase tracking-[0.4em] mb-4 drop-shadow-md">
+                                Medicina Alternativa 100% Natural
+                            </p>
+                            <h1 className="text-5xl md:text-7xl lg:text-8xl font-serif font-normal text-white leading-[1.1] mb-6 drop-shadow-lg">
+                                Dale un toque natural <br/>
+                                <span className="italic gold-gradient-text font-semibold">a tu vida.</span>
+                            </h1>
+                            <p className="text-lg md:text-xl text-alquimia-earth/90 mb-10 max-w-2xl mx-auto font-light leading-relaxed drop-shadow">
+                                Bienestar, salud y equilibrio. Crea tus propias combinaciones naturales a través de la masoterapia, nutrición y aromaterapia.
+                            </p>
+                            <div className="flex flex-col sm:flex-row justify-center gap-4">
+                                <a href={`https://wa.me/${WHATSAPP_NUM}?text=${WHATSAPP_MSG}`} target="_blank" className="px-8 py-4 btn-gold rounded-full font-sans font-bold tracking-wide text-sm flex items-center justify-center gap-2">
+                                    <i className="ph-fill ph-sparkle"></i> Iniciar Sanación
+                                </a>
+                                <a href="#botica" className="px-8 py-4 bg-white/10 backdrop-blur-md border border-white/40 text-white rounded-full font-sans font-medium tracking-wide text-sm hover:bg-white hover:text-alquimia-dark transition flex items-center justify-center">
+                                    Explorar Esencias
+                                </a>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* SOBRE KATHERINE */}
+                    <section id="nosotros" className="py-20 md:py-32 px-6 bg-alquimia-earth">
+                        <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-16 items-center">
+                            <div className="relative">
+                                <div className="absolute -inset-4 border-2 border-alquimia-gold/30 rounded-t-full rounded-b-3xl transform -rotate-3"></div>
+                                <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=1000&auto=format&fit=crop" alt="Yoga y Bienestar" className="w-full h-[600px] object-cover rounded-t-full rounded-b-3xl relative z-10 shadow-2xl"/>
+                                <div className="absolute bottom-10 -right-8 glass-panel p-6 rounded-2xl z-20 hidden md:block">
+                                    <p className="font-serif italic text-2xl text-alquimia-dark">"El cuerpo sana cuando<br/>el alma respira."</p>
+                                </div>
+                            </div>
+                            
+                            <div>
+                                <h2 className="text-alquimia-gold font-sans text-xs uppercase tracking-[0.3em] font-bold mb-3">La Alquimista</h2>
+                                <h3 className="text-4xl md:text-5xl font-serif text-alquimia-dark mb-6">Katherine Brenes</h3>
+                                <div className="flex gap-3 mb-8">
+                                    <span className="px-3 py-1 bg-alquimia-light text-alquimia-dark text-xs font-bold uppercase rounded-full">Mesoterapeuta</span>
+                                    <span className="px-3 py-1 bg-alquimia-light text-alquimia-dark text-xs font-bold uppercase rounded-full">Nutricionista</span>
+                                    <span className="px-3 py-1 bg-alquimia-light text-alquimia-dark text-xs font-bold uppercase rounded-full">Instructor Yoga</span>
+                                </div>
+                                <p className="text-alquimia-dark/70 leading-relaxed mb-6 font-light">
+                                    Creemos en el poder curativo de la tierra. Mi enfoque integra el movimiento consciente, la nutrición vibracional y el poder táctil de la medicina alternativa para restaurar tu equilibrio natural.
+                                </p>
+                                <p className="text-alquimia-dark/70 leading-relaxed mb-8 font-light">
+                                    A través de terapias personalizadas, combinamos esencias botánicas puras extraídas de la naturaleza para crear alquimia en tu cuerpo y mente.
+                                </p>
+                                
+                                <div className="grid grid-cols-2 gap-6 pt-6 border-t border-alquimia-dark/10">
+                                    <div>
+                                        <h4 className="font-serif text-xl text-alquimia-dark font-bold mb-1">Comidas Saludables</h4>
+                                        <p className="text-sm text-alquimia-dark/60">Planes nutricionales holísticos.</p>
+                                    </div>
+                                    <div>
+                                        <h4 className="font-serif text-xl text-alquimia-dark font-bold mb-1">Terapia Natural</h4>
+                                        <p className="text-sm text-alquimia-dark/60">Recuperación libre de químicos.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* SERVICIOS / ÁREAS DE PRÁCTICA */}
+                    <section id="servicios" className="py-24 bg-alquimia-dark text-alquimia-earth">
+                        <div className="max-w-7xl mx-auto px-6">
+                            <div className="text-center mb-16">
+                                <h2 className="font-serif text-4xl md:text-5xl mb-4 text-white">Pilares de Bienestar</h2>
+                                <p className="font-light text-alquimia-light/80 max-w-2xl mx-auto">Una aproximación integral para cultivar la armonía entre tu cuerpo, tu mente y la naturaleza.</p>
+                            </div>
+
+                            <div className="grid md:grid-cols-3 gap-8">
+                                {/* Service 1 */}
+                                <div className="border border-alquimia-gold/20 p-8 rounded-2xl bg-white/5 hover:bg-white/10 transition duration-300 group">
+                                    <div className="w-14 h-14 bg-alquimia-gold/20 rounded-full flex items-center justify-center text-alquimia-gold mb-6 group-hover:scale-110 transition">
+                                        <i className="ph-fill ph-hands-praying text-3xl"></i>
+                                    </div>
+                                    <h3 className="font-serif text-2xl mb-3 text-white">Masoterapia</h3>
+                                    <p className="font-light text-sm text-alquimia-light/70 leading-relaxed">
+                                        Masajes terapéuticos profundos que alivian la tensión, estimulan la circulación y liberan el estrés acumulado usando aceites esenciales personalizados.
+                                    </p>
+                                </div>
+                                
+                                {/* Service 2 */}
+                                <div className="border border-alquimia-gold/20 p-8 rounded-2xl bg-white/5 hover:bg-white/10 transition duration-300 group">
+                                    <div className="w-14 h-14 bg-alquimia-gold/20 rounded-full flex items-center justify-center text-alquimia-gold mb-6 group-hover:scale-110 transition">
+                                        <i className="ph-fill ph-person-simple-lotus text-3xl"></i>
+                                    </div>
+                                    <h3 className="font-serif text-2xl mb-3 text-white">Yoga & Meditación</h3>
+                                    <p className="font-light text-sm text-alquimia-light/70 leading-relaxed">
+                                        Instrucción guiada para flexibilizar el cuerpo y sosegar la mente. Secuencias diseñadas para reconectar con tu respiración y centro energético.
+                                    </p>
+                                </div>
+
+                                {/* Service 3 */}
+                                <div className="border border-alquimia-gold/20 p-8 rounded-2xl bg-white/5 hover:bg-white/10 transition duration-300 group">
+                                    <div className="w-14 h-14 bg-alquimia-gold/20 rounded-full flex items-center justify-center text-alquimia-gold mb-6 group-hover:scale-110 transition">
+                                        <i className="ph-fill ph-bowl-food text-3xl"></i>
+                                    </div>
+                                    <h3 className="font-serif text-2xl mb-3 text-white">Nutrición & Comidas</h3>
+                                    <p className="font-light text-sm text-alquimia-light/70 leading-relaxed">
+                                        La comida es tu primera medicina. Guía nutricional enfocada en alimentos puros, antiinflamatorios y llenos de vitalidad.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* LA BOTICA (AROMATERAPIA Y ESENCIAS) */}
+                    <section id="botica" className="py-24 bg-white relative overflow-hidden">
+                        <div className="absolute top-0 left-0 w-64 h-64 bg-alquimia-light rounded-full mix-blend-multiply filter blur-3xl opacity-50 -translate-x-1/2 -translate-y-1/2"></div>
+                        <div className="absolute bottom-0 right-0 w-80 h-80 bg-yellow-100 rounded-full mix-blend-multiply filter blur-3xl opacity-50 translate-x-1/3 translate-y-1/3"></div>
+
+                        <div className="max-w-7xl mx-auto px-6 relative z-10">
+                            <div className="flex flex-col md:flex-row gap-16">
+                                {/* Menú de Plantas */}
+                                <div className="w-full md:w-1/3 flex flex-col gap-4">
+                                    <h2 className="font-serif text-4xl text-alquimia-dark mb-6">El Grimorio Botánico</h2>
+                                    <p className="text-sm font-light text-gray-500 mb-8">Nuestras esencias son cuidadosamente seleccionadas. Conoce las propiedades curativas de cada gota.</p>
+                                    
+                                    {Object.keys(plantData).map(key => (
+                                        <button 
+                                            key={key}
+                                            onClick={() => setActivePlant(key)}
+                                            className={`text-left p-4 rounded-xl border transition-all duration-300 flex items-center gap-4 ${activePlant === key ? 'bg-alquimia-green text-white border-alquimia-green shadow-lg' : 'bg-transparent border-gray-200 text-alquimia-dark hover:border-alquimia-gold'}`}
+                                        >
+                                            <i className={`ph ${plantData[key].icon} text-2xl ${activePlant === key ? 'text-alquimia-gold' : 'text-alquimia-green'}`}></i>
+                                            <div>
+                                                <div className="font-serif font-bold text-lg">{plantData[key].title}</div>
+                                                <div className={`text-xs font-sans ${activePlant === key ? 'text-alquimia-earth/80' : 'text-gray-400'}`}>{plantData[key].subtitle}</div>
+                                            </div>
+                                        </button>
+                                    ))}
+                                </div>
+
+                                {/* Contenido de la Planta */}
+                                <div className="w-full md:w-2/3 bg-alquimia-earth rounded-3xl p-8 md:p-12 shadow-2xl border border-alquimia-gold/20 flex flex-col justify-center">
+                                    <div className="animate-fade-in" key={activePlant}>
+                                        <i className={`ph ${plantData[activePlant].icon} text-6xl text-alquimia-gold mb-6 opacity-50`}></i>
+                                        <h3 className="font-serif text-3xl md:text-5xl text-alquimia-dark mb-2">{plantData[activePlant].title}</h3>
+                                        <h4 className="font-sans text-sm font-bold text-alquimia-green uppercase tracking-widest mb-8">{plantData[activePlant].subtitle}</h4>
+                                        <p className="font-light text-alquimia-dark/80 leading-loose text-lg">
+                                            {plantData[activePlant].content}
+                                        </p>
+                                        
+                                        {activePlant === 'sinergia' && (
+                                            <div className="mt-8 p-4 bg-white/50 rounded-xl border border-alquimia-gold/30">
+                                                <p className="text-sm font-medium text-alquimia-dark italic text-center">
+                                                    "También incorporamos <b>Alcanfor</b> en nuestras preparaciones para brindar un alivio profundo y un bienestar integral."
+                                                </p>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* CONTACTO & FOOTER */}
+                    <footer className="bg-alquimia-dark text-alquimia-earth pt-20 pb-10 border-t-4 border-alquimia-gold">
+                        <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-3 gap-12 mb-16">
+                            
+                            <div>
+                                <div className="flex items-center gap-3 mb-6">
+                                    <img src="images/logo.png" alt="Logo" className="w-10 h-10 brightness-0 invert opacity-80" onError={(e) => e.target.style.display='none'}/>
+                                    <span className="font-serif text-2xl text-alquimia-gold font-bold">Alquimia Natural</span>
+                                </div>
+                                <p className="text-sm font-light text-white/60 leading-relaxed mb-6">
+                                    Medicina alternativa 100% natural. Creamos combinaciones curativas para darle un toque de bienestar y salud a tu vida.
+                                </p>
+                            </div>
+
+                            <div>
+                                <h4 className="font-sans text-xs font-bold uppercase tracking-widest text-alquimia-gold mb-6">Terapias</h4>
+                                <ul className="space-y-3 text-sm font-light text-white/70">
+                                    <li>Masoterapia Relajante</li>
+                                    <li>Consultoría Nutricional</li>
+                                    <li>Instrucción de Yoga</li>
+                                    <li>Aromaterapia Personalizada</li>
+                                </ul>
+                            </div>
+
+                            <div>
+                                <h4 className="font-sans text-xs font-bold uppercase tracking-widest text-alquimia-gold mb-6">Contacto Directo</h4>
+                                <div className="space-y-4">
+                                    <a href={`https://wa.me/50672000792`} target="_blank" className="flex items-center gap-3 text-white hover:text-alquimia-gold transition">
+                                        <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-xl"><i className="ph-fill ph-whatsapp-logo"></i></div>
+                                        <div>
+                                            <p className="text-xs text-white/50">Citas e Información</p>
+                                            <p className="font-bold">+506 7200-0792</p>
+                                        </div>
+                                    </a>
+                                    <a href={`https://wa.me/50672913200`} target="_blank" className="flex items-center gap-3 text-white hover:text-alquimia-gold transition">
+                                        <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-xl"><i className="ph-fill ph-phone-call"></i></div>
+                                        <div>
+                                            <p className="text-xs text-white/50">Línea Alternativa</p>
+                                            <p className="font-bold">+506 7291-3200</p>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="max-w-7xl mx-auto px-6 pt-8 border-t border-white/10 flex flex-col md:flex-row justify-between items-center gap-4 text-xs font-light text-white/50">
+                            <p>&copy; 2026 Alquimia Natural | Katherine Brenes. Todos los derechos reservados.</p>
+                            <p>
+                                Directorio ProfCR • Desarrollado por <a href="https://wstudiocr.com" target="_blank" className="text-alquimia-gold hover:text-white transition font-medium">Apollo Sol Invictus / W Studio</a>
+                            </p>
+                        </div>
+                    </footer>
+
+                    {/* Botón WhatsApp Flotante */}
+                    <a 
+                        href={`https://wa.me/${WHATSAPP_NUM}?text=${WHATSAPP_MSG}`}
+                        target="_blank"
+                        className="fixed bottom-6 right-6 w-16 h-16 bg-[#25D366] text-white rounded-full shadow-2xl flex items-center justify-center hover:bg-[#1EBE5D] transition-all transform hover:scale-110 z-50 group border-2 border-white"
+                        title="Escríbenos por WhatsApp"
+                    >
+                        <i className="ph-fill ph-whatsapp-logo text-3xl"></i>
+                        <span className="absolute right-full mr-4 bg-alquimia-dark text-white text-xs font-bold px-3 py-2 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap shadow-lg">
+                            Agenda tu cita
+                        </span>
+                    </a>
+
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
