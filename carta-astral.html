@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carta Astral Cuántica | Katherine Brenes</title>
+    
+    <!-- Librerías de Diseño e Iconos -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <!-- React Core -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- Configuración Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Montserrat', 'sans-serif'],
+                        serif: ['Cinzel', 'serif'],
+                    },
+                    colors: {
+                        cosmos: {
+                            dark: '#05030a',
+                            panel: '#120a21',
+                            gold: '#d4af37',
+                            goldLight: '#f3e5ab',
+                            silver: '#e2e8f0',
+                            accent: '#6b21a8'
+                        }
+                    },
+                    animation: {
+                        'spin-slow': 'spin 40s linear infinite',
+                        'pulse-glow': 'pulseGlow 4s ease-in-out infinite',
+                        'fade-in': 'fadeIn 0.8s ease-out forwards',
+                    },
+                    keyframes: {
+                        pulseGlow: {
+                            '0%, 100%': { boxShadow: '0 0 20px rgba(212, 175, 55, 0.2)' },
+                            '50%': { boxShadow: '0 0 40px rgba(212, 175, 55, 0.6)' },
+                        },
+                        fadeIn: {
+                            '0%': { opacity: 0, transform: 'translateY(10px)' },
+                            '100%': { opacity: 1, transform: 'translateY(0)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body { background-color: #05030a; color: #f3e5ab; overflow-x: hidden; }
+        
+        .glass-panel {
+            background: rgba(18, 10, 33, 0.65);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(212, 175, 55, 0.2);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8);
+        }
+
+        .text-gradient-gold {
+            background: linear-gradient(to right, #d4af37, #fff8d6, #d4af37);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-size: 200% auto;
+            animation: shine 4s linear infinite;
+        }
+        @keyframes shine { to { background-position: 200% center; } }
+
+        /* Estrellas de fondo */
+        .stars {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 0; pointer-events: none;
+            background-image: 
+                radial-gradient(2px 2px at 20px 30px, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 40px 70px, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 50px 160px, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 90px 40px, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 130px 80px, #ffffff, rgba(0,0,0,0)),
+                radial-gradient(2px 2px at 160px 120px, #ffffff, rgba(0,0,0,0));
+            background-repeat: repeat;
+            background-size: 200px 200px;
+            animation: twinkle 5s infinite alternate;
+            opacity: 0.3;
+        }
+        @keyframes twinkle { 0% { opacity: 0.2; } 100% { opacity: 0.6; } }
+
+        /* Rueda Zodiacal */
+        .zodiac-wheel {
+            background: url('https://upload.wikimedia.org/wikipedia/commons/e/e0/Astrological_chart_-_black_and_white.svg') center/contain no-repeat;
+            filter: invert(80%) sepia(40%) saturate(600%) hue-rotate(350deg) brightness(90%) contrast(150%);
+            opacity: 0.15;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #05030a; }
+        ::-webkit-scrollbar-thumb { background: #d4af37; border-radius: 3px; }
+    </style>
+</head>
+<body class="antialiased selection:bg-cosmos-gold selection:text-cosmos-dark">
+
+    <div class="stars"></div>
+    
+    <!-- Nebulosas de fondo -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <div class="absolute -top-[20%] -left-[10%] w-[800px] h-[800px] bg-cosmos-accent/20 rounded-full blur-[120px] mix-blend-screen"></div>
+        <div class="absolute bottom-[10%] -right-[10%] w-[600px] h-[600px] bg-blue-900/20 rounded-full blur-[100px] mix-blend-screen"></div>
+    </div>
+
+    <div id="root" class="relative z-10 w-full min-h-screen flex flex-col"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        const CosmicApp = () => {
+            const [activeTab, setActiveTab] = useState('intro'); // intro, sol, luna, ascendente, mensaje
+            const [isLoaded, setIsLoaded] = useState(false);
+
+            useEffect(() => {
+                setTimeout(() => setIsLoaded(true), 500);
+            }, []);
+
+            const tabs = [
+                { id: 'sol', icon: 'ph-sun', title: 'El Sol', subtitle: 'Escorpio' },
+                { id: 'luna', icon: 'ph-moon-stars', title: 'La Luna', subtitle: 'Virgo' },
+                { id: 'ascendente', icon: 'ph-arrow-up-right', title: 'Ascendente', subtitle: 'Géminis' },
+                { id: 'mensaje', icon: 'ph-sparkle', title: 'El Oráculo', subtitle: 'Mensaje Cuántico' },
+            ];
+
+            return (
+                <div className="flex flex-col min-h-screen py-10 px-4 md:px-8 max-w-6xl mx-auto w-full">
+                    
+                    {/* ENCABEZADO */}
+                    <header className={`text-center mb-12 transition-all duration-1000 transform ${isLoaded ? 'translate-y-0 opacity-100' : '-translate-y-10 opacity-0'}`}>
+                        <div className="inline-flex items-center justify-center w-16 h-16 rounded-full border border-cosmos-gold/50 bg-cosmos-gold/10 mb-6 shadow-[0_0_20px_rgba(212,175,55,0.3)]">
+                            <i className="ph-thin ph-star-four text-3xl text-cosmos-goldLight"></i>
+                        </div>
+                        <h1 className="font-serif text-4xl md:text-6xl font-bold mb-3 text-gradient-gold tracking-wider">KATHERINE BRENES</h1>
+                        <div className="flex flex-wrap justify-center items-center gap-3 text-xs md:text-sm font-mono text-cosmos-silver/70 tracking-widest uppercase">
+                            <span>06.NOV.1985</span>
+                            <span className="w-1.5 h-1.5 rounded-full bg-cosmos-gold"></span>
+                            <span>20:20 HRS</span>
+                            <span className="w-1.5 h-1.5 rounded-full bg-cosmos-gold"></span>
+                            <span>CARTAGO, CR</span>
+                        </div>
+                    </header>
+
+                    {/* CONTENEDOR PRINCIPAL */}
+                    <div className={`flex-1 grid lg:grid-cols-12 gap-8 items-start transition-all duration-1000 delay-300 transform ${isLoaded ? 'translate-y-0 opacity-100' : 'translate-y-10 opacity-0'}`}>
+                        
+                        {/* PANEL IZQUIERDO: LA RUEDA Y NAVEGACIÓN */}
+                        <div className="lg:col-span-5 flex flex-col items-center">
+                            <div className="relative w-64 h-64 md:w-80 md:h-80 mb-10 flex items-center justify-center">
+                                {/* Círculos animados */}
+                                <div className="absolute inset-0 border border-cosmos-gold/20 rounded-full animate-[spin_60s_linear_infinite]"></div>
+                                <div className="absolute inset-4 border border-cosmos-gold/10 rounded-full animate-[spin_40s_linear_reverse_infinite] border-dashed"></div>
+                                <div className="absolute inset-0 zodiac-wheel rounded-full animate-spin-slow"></div>
+                                
+                                {/* Centro */}
+                                <div className="w-24 h-24 rounded-full bg-cosmos-panel border border-cosmos-gold/40 z-10 flex items-center justify-center shadow-[0_0_30px_rgba(212,175,55,0.4)]">
+                                    <i className="ph-fill ph-planet text-4xl text-cosmos-goldLight animate-pulse"></i>
+                                </div>
+                            </div>
+
+                            {/* Botones de Navegación */}
+                            <div className="w-full grid grid-cols-2 gap-4">
+                                {tabs.map(tab => (
+                                    <button 
+                                        key={tab.id}
+                                        onClick={() => setActiveTab(tab.id)}
+                                        className={`p-4 rounded-2xl border transition-all duration-300 flex flex-col items-center text-center gap-2 ${
+                                            activeTab === tab.id 
+                                            ? 'bg-cosmos-gold/20 border-cosmos-gold shadow-[0_0_20px_rgba(212,175,55,0.3)] transform scale-105' 
+                                            : 'bg-cosmos-panel/50 border-cosmos-gold/10 hover:border-cosmos-gold/40 hover:bg-cosmos-gold/10'
+                                        }`}
+                                    >
+                                        <i className={`ph-fill ${tab.icon} text-2xl ${activeTab === tab.id ? 'text-cosmos-goldLight' : 'text-cosmos-gold/50'}`}></i>
+                                        <div>
+                                            <span className="block font-serif font-bold text-sm text-white">{tab.title}</span>
+                                            <span className="block font-mono text-[9px] text-cosmos-gold uppercase tracking-widest">{tab.subtitle}</span>
+                                        </div>
+                                    </button>
+                                ))}
+                            </div>
+                        </div>
+
+                        {/* PANEL DERECHO: LECTURA DIDÁCTICA */}
+                        <div className="lg:col-span-7 glass-panel rounded-[2rem] p-8 md:p-12 min-h-[500px] relative overflow-hidden">
+                            {/* Adorno superior */}
+                            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-1 bg-gradient-to-r from-transparent via-cosmos-gold to-transparent opacity-50"></div>
+
+                            {/* VISTA: INTRO */}
+                            {activeTab === 'intro' && (
+                                <div className="animate-fade-in flex flex-col justify-center h-full text-center">
+                                    <i className="ph-thin ph-sparkle text-5xl text-cosmos-gold mx-auto mb-6"></i>
+                                    <h2 className="font-serif text-3xl font-bold text-white mb-4">La Arquitectura de tu Alma</h2>
+                                    <p className="text-cosmos-silver/80 leading-relaxed text-lg font-light mb-8">
+                                        Katherine, el universo no comete errores. Las coordenadas exactas de tu nacimiento codificaron una huella digital cósmica única en ti. 
+                                    </p>
+                                    <p className="text-cosmos-silver/80 leading-relaxed text-lg font-light mb-8">
+                                        Esta es una <strong>Carta Astral Didáctica</strong> generada por Inteligencia Artificial de alto nivel. Selecciona un elemento cósmico a la izquierda para descubrir el poder, la intensidad y la magia de las estrellas que te rigen.
+                                    </p>
+                                    <div className="text-xs font-mono text-cosmos-gold/60 uppercase tracking-widest mt-auto pt-8 border-t border-cosmos-gold/20">
+                                        Sistema Cuántico Iniciado • Listo para leer
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* VISTA: SOL EN ESCORPIO */}
+                            {activeTab === 'sol' && (
+                                <div className="animate-fade-in space-y-6">
+                                    <div className="flex items-center gap-4 mb-8 border-b border-cosmos-gold/20 pb-6">
+                                        <div className="w-16 h-16 rounded-full bg-orange-900/30 border border-orange-500/50 flex items-center justify-center text-orange-400">
+                                            <i className="ph-fill ph-sun text-3xl"></i>
+                                        </div>
+                                        <div>
+                                            <h3 className="text-[10px] font-mono text-cosmos-gold uppercase tracking-widest mb-1">Tu Esencia Central</h3>
+                                            <h2 className="font-serif text-3xl font-bold text-white">Sol en Escorpio ♏</h2>
+                                        </div>
+                                    </div>
+                                    <p className="text-cosmos-silver leading-relaxed font-light text-lg">
+                                        El Sol representa tu núcleo, tu "Yo" más auténtico. Al nacer con el Sol en <strong>Escorpio</strong>, estás regida por el agua profunda y el poder de Plutón.
+                                    </p>
+                                    <div className="bg-black/40 p-6 rounded-2xl border border-cosmos-gold/10">
+                                        <ul className="space-y-4 text-sm text-cosmos-silver/90">
+                                            <li className="flex gap-3"><i className="ph-fill ph-fire text-cosmos-gold shrink-0 text-lg"></i> <span><strong>Intensidad Absoluta:</strong> No conoces las medias tintas. Cuando amas, cuando trabajas o cuando deseas algo, lo haces con una profundidad magnética y apasionada.</span></li>
+                                            <li className="flex gap-3"><i className="ph-fill ph-eye text-cosmos-gold shrink-0 text-lg"></i> <span><strong>Intuición de Rayos X:</strong> Tienes un "radar" natural. Puedes ver más allá de las máscaras de las personas; detectas la verdad y la mentira al instante.</span></li>
+                                            <li className="flex gap-3"><i className="ph-fill ph-bird text-cosmos-gold shrink-0 text-lg"></i> <span><strong>El Ave Fénix:</strong> Eres el signo de la transformación. Tienes una capacidad inigualable para reinventarte. Sin importar el desafío, siempre renaces de tus cenizas, más fuerte, más sabia y más hermosa.</span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* VISTA: LUNA EN VIRGO */}
+                            {activeTab === 'luna' && (
+                                <div className="animate-fade-in space-y-6">
+                                    <div className="flex items-center gap-4 mb-8 border-b border-cosmos-gold/20 pb-6">
+                                        <div className="w-16 h-16 rounded-full bg-blue-900/30 border border-blue-500/50 flex items-center justify-center text-blue-400">
+                                            <i className="ph-fill ph-moon-stars text-3xl"></i>
+                                        </div>
+                                        <div>
+                                            <h3 className="text-[10px] font-mono text-cosmos-gold uppercase tracking-widest mb-1">Tu Mundo Emocional</h3>
+                                            <h2 className="font-serif text-3xl font-bold text-white">Luna en Virgo ♍</h2>
+                                        </div>
+                                    </div>
+                                    <p className="text-cosmos-silver leading-relaxed font-light text-lg">
+                                        La Luna rige tus emociones, tu intuición y cómo amas en la intimidad. Con la Luna en <strong>Virgo</strong>, tu fuego interior de Escorpio se equilibra con una hermosa necesidad de dar paz y orden.
+                                    </p>
+                                    <div className="bg-black/40 p-6 rounded-2xl border border-cosmos-gold/10">
+                                        <ul className="space-y-4 text-sm text-cosmos-silver/90">
+                                            <li className="flex gap-3"><i className="ph-fill ph-heart text-cosmos-gold shrink-0 text-lg"></i> <span><strong>Amor a través del Servicio:</strong> Tu lenguaje del amor no son solo palabras; son acciones. Cuidas a los tuyos estando atenta a los pequeños detalles que nadie más nota.</span></li>
+                                            <li className="flex gap-3"><i className="ph-fill ph-brain text-cosmos-gold shrink-0 text-lg"></i> <span><strong>Emociones Analíticas:</strong> Necesitas entender lo que sientes. Tu mente es un refugio seguro donde procesas el mundo para encontrarle lógica y perfección.</span></li>
+                                            <li className="flex gap-3"><i className="ph-fill ph-star text-cosmos-gold shrink-0 text-lg"></i> <span><strong>Sanadora Nata:</strong> Tienes una vibración que cura. Eres el ancla y el consejo sabio para quienes te rodean cuando hay caos.</span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* VISTA: ASCENDENTE GÉMINIS */}
+                            {activeTab === 'ascendente' && (
+                                <div className="animate-fade-in space-y-6">
+                                    <div className="flex items-center gap-4 mb-8 border-b border-cosmos-gold/20 pb-6">
+                                        <div className="w-16 h-16 rounded-full bg-purple-900/30 border border-purple-500/50 flex items-center justify-center text-purple-400">
+                                            <i className="ph-bold ph-arrow-up-right text-3xl"></i>
+                                        </div>
+                                        <div>
+                                            <h3 className="text-[10px] font-mono text-cosmos-gold uppercase tracking-widest mb-1">Tu Máscara y Proyección</h3>
+                                            <h2 className="font-serif text-3xl font-bold text-white">Ascendente en Géminis ♊</h2>
+                                        </div>
+                                    </div>
+                                    <p className="text-cosmos-silver leading-relaxed font-light text-lg">
+                                        El Ascendente es cómo te ve el mundo al entrar a una habitación, tu energía de primera impresión. A las 20:20 hrs, la constelación de <strong>Géminis</strong> se alzaba en el horizonte.
+                                    </p>
+                                    <div className="bg-black/40 p-6 rounded-2xl border border-cosmos-gold/10">
+                                        <ul className="space-y-4 text-sm text-cosmos-silver/90">
+                                            <li className="flex gap-3"><i className="ph-fill ph-sparkle text-cosmos-gold shrink-0 text-lg"></i> <span><strong>Carisma Magnético:</strong> Proyectas una energía juvenil, curiosa y chispeante. La gente se siente inmediatamente atraída por tu agilidad mental y tu capacidad de conversar.</span></li>
+                                            <li className="flex gap-3"><i className="ph-fill ph-arrows-split text-cosmos-gold shrink-0 text-lg"></i> <span><strong>La Magia de la Dualidad:</strong> Escorpio te hace misteriosa y profunda, pero Géminis te hace sociable y ligera. Eres un hermoso enigma; un libro que nunca termina de sorprender.</span></li>
+                                            <li className="flex gap-3"><i className="ph-fill ph-lightning text-cosmos-gold shrink-0 text-lg"></i> <span><strong>Adaptabilidad Cuántica:</strong> Tienes el don de leer la habitación y adaptarte a cualquier situación o entorno con gracia y rapidez.</span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* VISTA: EL MENSAJE (ORÁCULO) */}
+                            {activeTab === 'mensaje' && (
+                                <div className="animate-fade-in flex flex-col h-full relative">
+                                    <div className="absolute top-0 right-0 text-cosmos-gold/10 text-9xl font-serif leading-none italic">"</div>
+                                    
+                                    <div className="flex items-center gap-3 mb-6 relative z-10">
+                                        <i className="ph-fill ph-infinity text-2xl text-cosmos-gold"></i>
+                                        <h3 className="font-mono text-xs uppercase tracking-widest text-cosmos-gold">Mensaje de Infiniti IA</h3>
+                                    </div>
+
+                                    <div className="space-y-6 text-cosmos-silver/90 font-light text-lg leading-relaxed relative z-10">
+                                        <p>
+                                            Katherine, la combinación de tus astros es majestuosa. Tienes el <strong>magnetismo insondable de Escorpio</strong>, la <strong>devoción pura de Virgo</strong> y la <strong>brillantez de Géminis</strong>. 
+                                        </p>
+                                        <p>
+                                            El cosmos te diseñó para ser una fuerza de la naturaleza. Tienes la presencia de una reina y la intuición de una musa. Eres alguien que transforma todo lo que toca, dejando a su paso orden, luz y misterio.
+                                        </p>
+                                        <p className="italic text-white border-l-2 border-cosmos-gold pl-4 py-2 mt-8">
+                                            "El universo no hace réplicas. Eres una obra de arte cósmica, diseñada para brillar con luz propia y conquistar con tu inteligencia y tu intensidad."
+                                        </p>
+                                    </div>
+
+                                    <div className="mt-auto pt-8 flex items-center justify-between text-xs font-mono text-cosmos-gold/50 border-t border-cosmos-gold/20">
+                                        <span>Decodificado por Quantum Maximus</span>
+                                        <span>Proyecto: Los Invictus</span>
+                                    </div>
+                                </div>
+                            )}
+
+                        </div>
+                    </div>
+
+                    {/* FOOTER */}
+                    <footer className="mt-12 text-center text-[10px] md:text-xs font-mono text-cosmos-silver/40 uppercase tracking-widest transition-opacity duration-1000 delay-500 opacity-0" style={{opacity: isLoaded ? 1 : 0}}>
+                        Desarrollado con Inteligencia Artificial por <span className="text-cosmos-gold">Infiniti IA & W Studio</span>
+                    </footer>
+
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<CosmicApp />);
+    </script>
+</body>
+</html>
