@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alquimia Natural | Bienestar y Transformación Botánica</title>
+    <meta name="description" content="El uso consciente de plantas y aceites para apoyar los procesos de equilibrio del cuerpo. Transformamos lo simple en vitalidad profunda.">
+    
+    <!-- Librerías de Diseño e Iconos -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <!-- Fuentes Elegantes (Serif para títulos, Sans para texto) -->
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+
+    <!-- React Core -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- Configuración Tailwind -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Cormorant Garamond', 'serif'],
+                    },
+                    colors: {
+                        alquimia: {
+                            bg: '#FDFBF7',       // Blanco cálido / Hueso
+                            primary: '#2D4A22',  // Verde Bosque Profundo
+                            secondary: '#8B9D77',// Verde Salvia
+                            accent: '#C5A059',   // Oro Botánico
+                            text: '#3E423F',     // Gris Oscuro para texto
+                            light: '#F4F1EA'     // Fondo secundario
+                        }
+                    },
+                    animation: {
+                        'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
+                        'slow-pan': 'panImage 30s linear infinite alternate',
+                    },
+                    keyframes: {
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        panImage: {
+                            '0%': { transform: 'scale(1.05) translate(0, 0)' },
+                            '100%': { transform: 'scale(1.1) translate(-2%, -2%)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body { background-color: #FDFBF7; color: #3E423F; }
+        
+        .glass-nav {
+            background: rgba(253, 251, 247, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 1px solid rgba(45, 74, 34, 0.1);
+        }
+
+        /* Scrollbar estilizado */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #FDFBF7; }
+        ::-webkit-scrollbar-thumb { background: #8B9D77; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #2D4A22; }
+
+        .leaf-pattern {
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%238b9d77' fill-opacity='0.05'%3E%3Cpath d='M54.627 0l.83.83-26.83 26.83-1.414-1.414 26.83-26.83-.586-.586L26.627 25.657l-1.414-1.414L52.043 0h2.584zm-50.6 60l-.83-.83 26.83-26.83 1.414 1.414-26.83 26.83.586.586L28.6 34.343l1.414 1.414L3.184 60H.6zM26.2 0h-2.83l26.83 26.83 1.414-1.414L26.2 0zM0 26.2v2.83l26.83 26.83 1.414-1.414L0 26.2zm0 28.17v-2.83l26.83-26.83-1.414 1.414L0 54.37zM28.17 60h2.83L3.17 33.17l-1.414 1.414L28.17 60z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-alquimia-secondary selection:text-white">
+
+    <div id="root" class="min-h-screen flex flex-col relative"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect } = React;
+
+        const App = () => {
+            const [scrolled, setScrolled] = useState(false);
+            const [mobileMenu, setMobileMenu] = useState(false);
+
+            useEffect(() => {
+                const handleScroll = () => setScrolled(window.scrollY > 50);
+                window.addEventListener('scroll', handleScroll);
+                return () => window.removeEventListener('scroll', handleScroll);
+            }, []);
+
+            return (
+                <div className="flex flex-col min-h-screen w-full overflow-x-hidden">
+                    
+                    {/* NAVEGACIÓN */}
+                    <nav className={`fixed w-full z-50 transition-all duration-300 ${scrolled ? 'glass-nav py-3 shadow-sm' : 'bg-transparent py-5'}`}>
+                        <div className="max-w-7xl mx-auto px-6 flex justify-between items-center">
+                            
+                            <a href="#" className="flex items-center gap-3 z-50">
+                                <img src="images/logo.png" alt="Alquimia Natural Logo" className="h-12 w-auto object-contain" onError={(e) => e.target.style.display='none'} />
+                                <span className={`font-serif font-bold text-2xl tracking-widest uppercase transition-colors ${scrolled ? 'text-alquimia-primary' : 'text-white drop-shadow-md'}`}>
+                                    Alquimia
+                                </span>
+                            </a>
+
+                            <div className="hidden md:flex items-center gap-8 font-sans text-sm tracking-widest uppercase font-medium">
+                                <a href="#filosofia" className={`transition hover:text-alquimia-accent ${scrolled ? 'text-alquimia-text' : 'text-white drop-shadow-md'}`}>Filosofía</a>
+                                <a href="#sinergia" className={`transition hover:text-alquimia-accent ${scrolled ? 'text-alquimia-text' : 'text-white drop-shadow-md'}`}>Sinergia Esencial</a>
+                                <a href="#aderezo" className={`transition hover:text-alquimia-accent ${scrolled ? 'text-alquimia-text' : 'text-white drop-shadow-md'}`}>Aderezo Artesanal</a>
+                            </div>
+
+                            <a href="https://wa.me/50688888888" target="_blank" className={`hidden md:flex px-6 py-2.5 border font-sans text-xs font-bold uppercase tracking-widest transition-all rounded-full ${scrolled ? 'border-alquimia-primary text-alquimia-primary hover:bg-alquimia-primary hover:text-white' : 'border-white text-white hover:bg-white hover:text-alquimia-primary'}`}>
+                                Contactar
+                            </a>
+
+                            {/* Mobile Menu Toggle */}
+                            <button onClick={() => setMobileMenu(!mobileMenu)} className={`md:hidden text-2xl z-50 ${scrolled || mobileMenu ? 'text-alquimia-primary' : 'text-white'}`}>
+                                <i className={`ph ${mobileMenu ? 'ph-x' : 'ph-list'}`}></i>
+                            </button>
+                        </div>
+
+                        {/* Menú Móvil */}
+                        <div className={`fixed inset-0 bg-alquimia-bg z-40 flex flex-col items-center justify-center space-y-8 transition-transform duration-500 ${mobileMenu ? 'translate-x-0' : 'translate-x-full'}`}>
+                            <a href="#filosofia" onClick={() => setMobileMenu(false)} className="font-serif text-3xl text-alquimia-primary">Filosofía</a>
+                            <a href="#sinergia" onClick={() => setMobileMenu(false)} className="font-serif text-3xl text-alquimia-primary">Sinergia Esencial</a>
+                            <a href="#aderezo" onClick={() => setMobileMenu(false)} className="font-serif text-3xl text-alquimia-primary">Aderezo Artesanal</a>
+                            <a href="https://wa.me/50688888888" className="mt-8 px-8 py-3 bg-alquimia-primary text-white font-sans text-sm uppercase tracking-widest rounded-full">Contactar por WhatsApp</a>
+                        </div>
+                    </nav>
+
+                    {/* HERO SECTION */}
+                    <section className="relative w-full h-[90vh] min-h-[600px] flex items-center justify-center overflow-hidden">
+                        <div className="absolute inset-0 z-0 bg-alquimia-primary">
+                            {/* Usamos el aceite natural como fondo del Hero */}
+                            <img 
+                                src="images/Aceite natural.jpeg" 
+                                alt="Fondo Botánico" 
+                                className="w-full h-full object-cover opacity-60 mix-blend-overlay animate-slow-pan"
+                                onError={(e) => e.target.src='https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?q=80&w=2000&auto=format&fit=crop'}
+                            />
+                            <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-alquimia-bg"></div>
+                        </div>
+
+                        <div className="relative z-10 text-center px-4 max-w-4xl mx-auto animate-fade-in-up mt-20">
+                            <i className="ph-fill ph-heart text-alquimia-accent text-3xl mb-6 animate-pulse"></i>
+                            <h1 className="font-serif text-5xl md:text-7xl lg:text-8xl text-white mb-6 leading-tight drop-shadow-lg">
+                                Alquimia <span className="italic text-alquimia-accent font-light">Natural</span>
+                            </h1>
+                            <p className="font-sans text-lg md:text-xl text-white/90 font-light max-w-2xl mx-auto leading-relaxed drop-shadow-md">
+                                No se trata solo de plantas o productos naturales, sino del hermoso proceso de transformación que ocurre cuando la naturaleza y el cuerpo trabajan juntos.
+                            </p>
+                        </div>
+                    </section>
+
+                    {/* SECCIÓN: FILOSOFÍA (QUÉ ES ALQUIMIA NATURAL) */}
+                    <section id="filosofia" className="py-24 bg-alquimia-bg leaf-pattern relative">
+                        <div className="max-w-7xl mx-auto px-6">
+                            <div className="text-center mb-16 max-w-3xl mx-auto">
+                                <h2 className="font-serif text-4xl md:text-5xl text-alquimia-primary mb-6">El Arte de la Transformación</h2>
+                                <p className="font-sans text-alquimia-text/70 leading-relaxed text-lg">
+                                    Creemos en el poder sanador de la tierra. Alquimia Natural es la materialización de cuatro pilares fundamentales para tu bienestar integral.
+                                </p>
+                            </div>
+
+                            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                                {[
+                                    { icon: "ph-plant", title: "Uso Consciente", desc: "Uso consciente de plantas, aceites y elementos naturales para apoyar los procesos de equilibrio del cuerpo." },
+                                    { icon: "ph-sparkle", title: "Activación Innata", desc: "Activación de la capacidad innata del organismo para limpiarse, repararse y regenerarse por sí mismo." },
+                                    { icon: "ph-books", title: "Sabiduría Ancestral", desc: "La unión perfecta entre el conocimiento botánico ancestral y la experiencia viva del cuerpo." },
+                                    { icon: "ph-drop", title: "Transformación", desc: "Transformar lo simple (una planta) en algo profundo: bienestar real, claridad mental y vitalidad." }
+                                ].map((item, i) => (
+                                    <div key={i} className="bg-white p-8 rounded-2xl shadow-[0_10px_30px_rgba(45,74,34,0.05)] border border-alquimia-primary/5 hover:-translate-y-2 transition-transform duration-300">
+                                        <div className="w-14 h-14 rounded-full bg-alquimia-light flex items-center justify-center text-alquimia-accent mb-6">
+                                            <i className={`ph-fill ${item.icon} text-2xl`}></i>
+                                        </div>
+                                        <h3 className="font-serif text-xl font-bold text-alquimia-primary mb-3">{item.title}</h3>
+                                        <p className="font-sans text-sm text-alquimia-text/80 leading-relaxed">{item.desc}</p>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* SECCIÓN: LA SINERGIA PERFECTA */}
+                    <section id="sinergia" className="py-24 bg-white border-y border-alquimia-light">
+                        <div className="max-w-7xl mx-auto px-6">
+                            
+                            <div className="grid lg:grid-cols-2 gap-16 items-center mb-20">
+                                <div className="relative">
+                                    <div className="absolute -inset-4 bg-alquimia-light rounded-3xl transform -rotate-3 z-0"></div>
+                                    <img 
+                                        src="images/Aceite Esencial de Oregano.jpeg" 
+                                        alt="La Sinergia Perfecta" 
+                                        className="relative z-10 w-full h-[500px] object-cover rounded-2xl shadow-xl"
+                                        onError={(e) => e.target.src='https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?q=80&w=800&auto=format&fit=crop'}
+                                    />
+                                    {/* Insignia Flotante */}
+                                    <div className="absolute -bottom-6 -right-6 bg-alquimia-primary text-white p-6 rounded-full w-32 h-32 flex items-center justify-center flex-col shadow-lg z-20 border-4 border-white">
+                                        <i className="ph-fill ph-drop text-2xl text-alquimia-accent mb-1"></i>
+                                        <span className="font-sans text-[10px] uppercase tracking-widest text-center font-bold">100% Puro</span>
+                                    </div>
+                                </div>
+
+                                <div>
+                                    <h4 className="font-sans text-xs uppercase tracking-[0.2em] text-alquimia-accent font-bold mb-3">Fusión Botánica</h4>
+                                    <h2 className="font-serif text-4xl md:text-5xl text-alquimia-primary mb-6 leading-tight">La Sinergia Perfecta</h2>
+                                    <p className="font-sans text-alquimia-text/80 leading-relaxed mb-6">
+                                        Compuesta por <strong>orégano, menta, eucalipto y romero</strong>, es una fusión botánica que aporta frescura, activación y limpieza profunda.
+                                    </p>
+                                    <p className="font-sans text-alquimia-text/80 leading-relaxed mb-8">
+                                        Su aplicación genera una sensación de ligereza y renovación, ayudando a estimular la circulación, relajar tensiones musculares y favorecer una respiración más libre. Gracias a su sinergia natural, también acompaña el fortalecimiento capilar y el equilibrio de la piel y uñas, siendo versátil para masajes y rutinas de bienestar.
+                                    </p>
+                                </div>
+                            </div>
+
+                            {/* Grid de los 4 Elementos de la Sinergia */}
+                            <div className="grid md:grid-cols-2 gap-8">
+                                {/* Romero */}
+                                <div className="flex gap-6 p-6 rounded-2xl bg-alquimia-light/50 hover:bg-alquimia-light transition-colors">
+                                    <div className="w-16 h-16 shrink-0 rounded-full bg-white flex items-center justify-center shadow-sm text-alquimia-primary">
+                                        <i className="ph-fill ph-plant text-3xl"></i>
+                                    </div>
+                                    <div>
+                                        <h3 className="font-serif text-2xl text-alquimia-primary mb-1">Romero</h3>
+                                        <p className="font-sans text-xs text-alquimia-accent uppercase tracking-widest font-bold mb-3">Equilibrio y vitalidad</p>
+                                        <p className="font-sans text-sm text-alquimia-text/80 leading-relaxed">
+                                            Valorado por sus propiedades antioxidantes y purificantes. Ayuda a activar la circulación, aporta ligereza y es ideal en el cuidado capilar para el fortalecimiento y equilibrio del cuero cabelludo. Su aroma otorga claridad mental y enfoque.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                {/* Menta */}
+                                <div className="flex gap-6 p-6 rounded-2xl bg-alquimia-light/50 hover:bg-alquimia-light transition-colors">
+                                    <div className="w-16 h-16 shrink-0 rounded-full bg-white flex items-center justify-center shadow-sm text-alquimia-primary">
+                                        <i className="ph-fill ph-wind text-3xl"></i>
+                                    </div>
+                                    <div>
+                                        <h3 className="font-serif text-2xl text-alquimia-primary mb-1">Menta</h3>
+                                        <p className="font-sans text-xs text-alquimia-accent uppercase tracking-widest font-bold mb-3">Frescura y claridad</p>
+                                        <p className="font-sans text-sm text-alquimia-text/80 leading-relaxed">
+                                            Gracias a su mentol natural, aporta frescura inmediata que relaja tensiones y favorece una respiración despejada. Su aroma estimula la claridad mental, siendo un aliado ideal para purificar la piel y revitalizar el espíritu.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                {/* Eucalipto */}
+                                <div className="flex gap-6 p-6 rounded-2xl bg-alquimia-light/50 hover:bg-alquimia-light transition-colors">
+                                    <div className="w-16 h-16 shrink-0 rounded-full bg-white flex items-center justify-center shadow-sm text-alquimia-primary">
+                                        <i className="ph-fill ph-lungs text-3xl"></i>
+                                    </div>
+                                    <div>
+                                        <h3 className="font-serif text-2xl text-alquimia-primary mb-1">Eucalipto</h3>
+                                        <p className="font-sans text-xs text-alquimia-accent uppercase tracking-widest font-bold mb-3">Respiración y pureza</p>
+                                        <p className="font-sans text-sm text-alquimia-text/80 leading-relaxed">
+                                            Reconocido por aportar una sensación de respiración libre. Su aroma intenso aclara la mente, libera tensiones y genera limpieza y ligereza en el cuerpo, favoreciendo una experiencia de bienestar profunda.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                {/* Orégano */}
+                                <div className="flex gap-6 p-6 rounded-2xl bg-alquimia-light/50 hover:bg-alquimia-light transition-colors">
+                                    <div className="w-16 h-16 shrink-0 rounded-full bg-white flex items-center justify-center shadow-sm text-alquimia-primary">
+                                        <i className="ph-fill ph-shield-plus text-3xl"></i>
+                                    </div>
+                                    <div>
+                                        <h3 className="font-serif text-2xl text-alquimia-primary mb-1">Orégano</h3>
+                                        <p className="font-sans text-xs text-alquimia-accent uppercase tracking-widest font-bold mb-3">Purificación y protección</p>
+                                        <p className="font-sans text-sm text-alquimia-text/80 leading-relaxed">
+                                            De carácter intenso y depurativo. Apoya el equilibrio natural del cuerpo y se asocia con el cuidado integral de la piel y uñas. Su energía potente lo hace un escudo protector que complementa a la perfección esta sinergia.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </section>
+
+                    {/* SECCIÓN: ADEREZO ARTESANAL */}
+                    <section id="aderezo" className="py-24 bg-alquimia-primary text-alquimia-bg leaf-pattern relative overflow-hidden">
+                        <div className="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-16 items-center relative z-10">
+                            
+                            <div>
+                                <h4 className="font-sans text-xs uppercase tracking-[0.2em] text-alquimia-accent font-bold mb-3">Cocina Consciente</h4>
+                                <h2 className="font-serif text-4xl md:text-5xl text-white mb-6 leading-tight">Aderezo Artesanal Mediterráneo</h2>
+                                <p className="font-sans text-alquimia-bg/80 leading-relaxed mb-6 text-lg">
+                                    Más que un aderezo: una sinergia mediterránea que transforma el sabor y acompaña tu digestión de forma natural.
+                                </p>
+                                <p className="font-sans text-alquimia-bg/80 leading-relaxed mb-8">
+                                    Esta combinación muy inteligente aporta sabor profundo, propiedades digestivas y apoyo natural al metabolismo. Ideal para comidas pesadas o grasosas.
+                                </p>
+
+                                <div className="bg-black/20 p-6 rounded-2xl mb-8 backdrop-blur-sm border border-white/10">
+                                    <h3 className="font-serif text-xl text-alquimia-accent mb-4">¿Por qué es magnífica esta sinergia?</h3>
+                                    <ul className="space-y-4 font-sans text-sm">
+                                        <li className="flex items-start gap-3">
+                                            <i className="ph-fill ph-check-circle text-alquimia-accent mt-1 text-lg"></i>
+                                            <span><strong>Ayuda a comidas pesadas:</strong> Romero, laurel, vinagre y pimienta hacen que platos abundantes se sientan más ligeros.</span>
+                                        </li>
+                                        <li className="flex items-start gap-3">
+                                            <i className="ph-fill ph-check-circle text-alquimia-accent mt-1 text-lg"></i>
+                                            <span><strong>Sabor sin exceso:</strong> Permite usar menos salsas artificiales, menos azúcar y menos sal gracias a su gran carácter natural.</span>
+                                        </li>
+                                        <li className="flex items-start gap-3">
+                                            <i className="ph-fill ph-check-circle text-alquimia-accent mt-1 text-lg"></i>
+                                            <span><strong>Perfil Mediterráneo Funcional:</strong> La fórmula clásica (Aceite de oliva + hierbas + ajo) ligada a la cocina tradicional saludable.</span>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div>
+                                    <h3 className="font-serif text-xl text-white mb-4 border-b border-white/10 pb-2">Elixir culinario ideal para:</h3>
+                                    <div className="flex flex-wrap gap-2">
+                                        {['Ensaladas verdes', 'Vegetales asados', 'Pollo o pescado', 'Pan artesanal', 'Pasta fría', 'Papas al horno', 'Garbanzos y lentejas'].map((item, i) => (
+                                            <span key={i} className="px-3 py-1.5 bg-white/10 rounded-full text-xs font-sans tracking-wide border border-white/20">{item}</span>
+                                        ))}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="relative">
+                                {/* Decoración de fondo */}
+                                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-alquimia-accent/20 rounded-full blur-[80px]"></div>
+                                
+                                <div className="grid grid-cols-2 gap-4 relative z-10">
+                                    <img 
+                                        src="images/Aderezo Artesanal.jpeg" 
+                                        alt="Aderezo Artesanal" 
+                                        className="w-full h-72 object-cover rounded-2xl shadow-2xl transform translate-y-8 border-2 border-alquimia-accent/30"
+                                        onError={(e) => e.target.src='https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?q=80&w=600&auto=format&fit=crop'}
+                                    />
+                                    <img 
+                                        src="images/Meditarraneo.jpeg" 
+                                        alt="Ingredientes Mediterráneos" 
+                                        className="w-full h-72 object-cover rounded-2xl shadow-2xl -translate-y-8 border-2 border-alquimia-accent/30"
+                                        onError={(e) => e.target.src='https://images.unsplash.com/photo-1596647413551-78eb424c9657?q=80&w=600&auto=format&fit=crop'}
+                                    />
+                                </div>
+
+                                {/* Tarjeta de Ingredientes Flotante */}
+                                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-alquimia-bg text-alquimia-primary p-6 rounded-2xl shadow-2xl z-20 w-64 text-center border-t-4 border-alquimia-accent">
+                                    <i className="ph-fill ph-bowl-food text-3xl text-alquimia-accent mb-2"></i>
+                                    <h4 className="font-serif font-bold text-lg mb-2 border-b border-alquimia-primary/10 pb-2">Los Ingredientes</h4>
+                                    <p className="font-sans text-xs leading-relaxed text-alquimia-text/80">
+                                        <strong>Base noble:</strong> Aceite de oliva extra virgen.<br/>
+                                        <strong>Equilibrio:</strong> Vinagre balsámico y pimientas mixtas.<br/>
+                                        <strong>Esencias:</strong> Hojas de laurel, romero, tomillo y ajo.
+                                    </p>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    </section>
+
+                    {/* CALL TO ACTION */}
+                    <section className="py-20 bg-alquimia-light text-center">
+                        <div className="max-w-2xl mx-auto px-6">
+                            <i className="ph-thin ph-plant text-5xl text-alquimia-primary mb-6"></i>
+                            <h2 className="font-serif text-3xl md:text-4xl text-alquimia-primary mb-6">Inicia tu transformación botánica</h2>
+                            <p className="font-sans text-alquimia-text/70 mb-10">
+                                Permite que la sabiduría ancestral de las plantas te brinde claridad, vitalidad y equilibrio.
+                            </p>
+                            <a href="https://wa.me/50688888888" className="inline-flex items-center gap-3 px-10 py-4 bg-alquimia-primary text-white rounded-full font-sans font-bold uppercase tracking-widest text-sm hover:bg-green-800 transition shadow-xl shadow-green-900/20">
+                                <i className="ph-fill ph-whatsapp text-xl"></i> Haz tu pedido aquí
+                            </a>
+                        </div>
+                    </section>
+
+                    {/* FOOTER */}
+                    <footer className="bg-white py-12 border-t border-alquimia-light">
+                        <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
+                            <div className="flex items-center gap-3 opacity-60 grayscale">
+                                <img src="images/logo.png" alt="Alquimia Natural Logo" className="h-8 w-auto object-contain" onError={(e) => e.target.style.display='none'} />
+                                <span className="font-serif font-bold text-xl tracking-widest uppercase text-alquimia-primary">
+                                    Alquimia
+                                </span>
+                            </div>
+                            
+                            <p className="font-sans text-xs text-alquimia-text/50 uppercase tracking-widest text-center">
+                                © 2026 Alquimia Natural. San José, Costa Rica. <br className="md:hidden"/> Todos los derechos reservados.
+                            </p>
+                            
+                            <div className="flex gap-4">
+                                <a href="#" className="w-10 h-10 rounded-full bg-alquimia-light flex items-center justify-center text-alquimia-primary hover:bg-alquimia-primary hover:text-white transition"><i className="ph-fill ph-instagram-logo text-lg"></i></a>
+                                <a href="#" className="w-10 h-10 rounded-full bg-alquimia-light flex items-center justify-center text-alquimia-primary hover:bg-alquimia-primary hover:text-white transition"><i className="ph-fill ph-facebook-logo text-lg"></i></a>
+                            </div>
+                        </div>
+                    </footer>
+
+                </div>
+            );
+        };
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
